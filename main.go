@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,19 +10,19 @@ import (
 func init() {
 	go func() {
 		for {
-			item := <-channel
-			fmt.Println(item)
+			now := <-channel
+			fmt.Println(now)
 		}
 	}()
 }
 
-var channel = make(chan int)
+var channel = make(chan time.Time)
 
 func main() {
 	router := gin.Default()
 
 	router.GET("/", func(ctx *gin.Context) {
-		channel <- 3
+		channel <- time.Now()
 		ctx.String(200, "Hello Gin")
 	})
 
